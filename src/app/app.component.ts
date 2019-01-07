@@ -1,9 +1,6 @@
 import { Component, OnInit, ViewChild, ContentChild } from '@angular/core';
 
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-
-import { MatTableDataSource } from '@angular/material';
+import { MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
 
 export interface PeriodicElement {
   name: string;
@@ -23,25 +20,40 @@ const ELEMENT_DATA: PeriodicElement[] = [
   { position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
   { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
   { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
+  { position: 11, name: 'Boron', weight: 10.811, symbol: 'B' },
+  { position: 12, name: 'Carbon', weight: 12.0107, symbol: 'C' },
+  { position: 13, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
+  { position: 14, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
+  { position: 15, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
+  { position: 16, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
 ];
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent  {
+export class AppComponent implements OnInit {
  
- 
- 
-
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+    //  dataSource: MatTableDataSource<UserData>;
   dataSource = new MatTableDataSource(ELEMENT_DATA);
 
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+
+  ngOnInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
   
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
 
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
  
 }
 
